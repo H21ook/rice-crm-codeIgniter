@@ -2266,6 +2266,8 @@ $lang["can_add_own_timelogs_only"] = "Kann nur eigene Zeitprotokolle hinzufügen
 $lang["all_tasks_overview"] = "Übersicht aller Aufgaben";
 
 $lang["invoice_overview"] = "Rechnungsübersicht";
+$lang["client_label_overview"] = "Client Label Overview";
+$lang["client_address_overview"] = "Client Addres Overview";
 
 $lang["next_reminder"] = "Nächste Erinnerung";
 

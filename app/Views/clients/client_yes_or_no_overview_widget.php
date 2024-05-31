@@ -1,12 +1,13 @@
 <?php
-$total_points = $projects_info->total_points;
-$completed_points = $projects_info->completed_points;
+$client_total_count = $clients_count->client_total_count;
+$count_yes = $clients_count->count_yes;
+$count_no = $clients_count->count_no;
 
-$progress = $total_points ? round(($completed_points / $total_points) * 100) : 0;
+$progress = $client_total_count ? round(($count_yes / $client_total_count) * 100) : 0;
 ?>
 <div class="card bg-white">
     <div class="card-header">
-        <i data-feather="grid" class="icon-16"></i> &nbsp;<?php echo app_lang("projects_overview"); ?>
+        <i data-feather="grid" class="icon-16"></i> &nbsp;<?php echo "Yes or No"; ?>
     </div>
     <div class="rounded-bottom pt-2">
         <div class="box">
@@ -14,8 +15,8 @@ $progress = $total_points ? round(($completed_points / $total_points) * 100) : 0
                 <a href="<?php echo get_uri('projects/all_projects/1'); ?>" class="text-default">
                     <div class="pt-3 pb10 text-center">
                         <div class="b-r">
-                            <h4 class="strong mb-1 mt-0" style="color: #01B393;"><?php echo $count_project_status->open; ?></h4>
-                            <span><?php echo $open_status_text; ?></span>
+                            <h4 class="strong mb-1 mt-0" style="color: #01B393;"><?php echo $count_yes; ?></h4>
+                            <span>YES</span>
                         </div>
                     </div>
                 </a>
@@ -24,8 +25,8 @@ $progress = $total_points ? round(($completed_points / $total_points) * 100) : 0
                 <a href="<?php echo get_uri('projects/all_projects/2'); ?>" class="text-default">
                     <div class="pt-3 pb10 text-center">
                         <div class="b-r">
-                            <h4 class="strong mb-1 mt-0 text-danger"><?php echo $count_project_status->completed; ?></h4>
-                            <span><?php echo $completed_status_text; ?></span>
+                            <h4 class="strong mb-1 mt-0 text-danger"><?php echo $count_no; ?></h4>
+                            <span>NO</span>
                         </div>
                     </div>
                 </a>
@@ -34,8 +35,8 @@ $progress = $total_points ? round(($completed_points / $total_points) * 100) : 0
                 <a href="<?php echo get_uri('projects/all_projects/3'); ?>" class="text-default">
                     <div class="pt-3 pb10 text-center">
                         <div>
-                            <h4 class="strong mb-1 mt-0 text-warning"><?php echo $count_project_status->hold; ?></h4>
-                            <span><?php echo $hold_status_text; ?></span>
+                            <h4 class="strong mb-1 mt-0 text-warning"><?php echo $client_total_count; ?></h4>
+                            <span>TOTAL</span>
                         </div>
                     </div>
                 </a>

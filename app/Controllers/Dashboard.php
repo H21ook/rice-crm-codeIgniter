@@ -159,7 +159,7 @@ class Dashboard extends Security_Controller {
             $widget["total_invoices"] = true;
             $widget["total_payments"] = true;
             $widget["draft_invoices_value"] = true;
-            $widget["invoice_overview"] = true;
+            $widget["invoice_overview"] = false;
         }
 
         if ($show_expense && $show_invoice && $this->can_view_invoices()) {
@@ -226,9 +226,15 @@ class Dashboard extends Security_Controller {
             $widget["my_open_tasks"] = true;
             $widget["task_status"] = true;
             $widget["all_tasks_kanban"] = true;
-            $widget["projects_overview"] = true;
-            $widget["all_tasks_overview"] = true;
+            $widget["projects_overview"] = false;
+            // Custom
+            $widget["yes_or_no_overview"] = true;
+            $widget["client_address_overview"] = true;
+            $widget["client_label_overview"] = true;
+            // Custom
+            $widget["all_tasks_overview"] = false;
             $widget["my_tasks_overview"] = true;
+            
         }
 
         if ($show_announcement) {
@@ -524,18 +530,32 @@ class Dashboard extends Security_Controller {
             }
         }
 
+        if (get_array_value($widgets, "yes_or_no_overview")) {
+            if (get_array_value($widgets, "next_reminder")) {
+                $columns[] = array("yes_or_no_overview", "next_reminder");
+            } else {
+                $columns[] = array("yes_or_no_overview");
+            }
+        }
 
         if (get_array_value($widgets, "invoice_overview")) {
             $columns[] = array("invoice_overview");
+        }
+
+        if (get_array_value($widgets, "client_address_overview")) {
+            $columns[] = array("client_address_overview");
         }
 
         if (get_array_value($widgets, "income_vs_expenses")) {
             $columns[] = array("income_vs_expenses");
         }
 
-
         if (get_array_value($widgets, "all_tasks_overview")) {
             $columns[] = array("all_tasks_overview");
+        }
+        // Custom
+        if (get_array_value($widgets, "client_label_overview")) {
+            $columns[] = array("client_label_overview");
         }
 
         if (get_array_value($widgets, "team_members_overview")) {
@@ -854,6 +874,9 @@ class Dashboard extends Security_Controller {
                 "next_reminder",
                 "leads_overview",
                 "my_tasks_overview",
+                "client_label_overview",
+                "client_address_overview",
+                "yes_or_no_overview"
             );
         } else {
             $default_widgets_array = array(
@@ -1150,6 +1173,8 @@ class Dashboard extends Security_Controller {
                 return total_leads_widget(true, $show_own_leads_only_user_id);
             } else if ($widget == "projects_overview") {
                 return projects_overview_widget();
+            } else if ($widget == "yes_or_no_overview") {
+                return yes_or_no_overview_widget();
             } else if ($widget == "estimate_sent_statistics") {
                 return estimate_sent_statistics_widget();
             } else if ($widget == "last_announcement") {
@@ -1165,8 +1190,12 @@ class Dashboard extends Security_Controller {
                 ));
             } else if ($widget == "all_tasks_overview") {
                 return tasks_overview_widget("all_tasks_overview");
-            } else if ($widget == "invoice_overview") {
+            } else if ($widget == "client_label_overview") {
+                return client_label_overview_widget();
+            }  else if ($widget == "invoice_overview") {
                 return invoice_overview_widget();
+            } else if ($widget == "client_address_overview") {
+                return client_address_overview_widget();
             } else if ($widget == "next_reminder") {
                 return next_reminder_widget();
             } else if ($widget == "leads_overview") {

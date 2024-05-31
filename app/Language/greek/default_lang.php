@@ -2266,6 +2266,8 @@ $lang["can_add_own_timelogs_only"] = "Μπορεί να προσθέσει μό�
 $lang["all_tasks_overview"] = "Επισκόπηση όλων των εργασιών";
 
 $lang["invoice_overview"] = "Επισκόπηση τιμολογίου";
+$lang["client_label_overview"] = "Client Label Overview";
+$lang["client_address_overview"] = "Client Addres Overview";
 
 $lang["next_reminder"] = "Επόμενη υπενθύμιση";
 

@@ -2266,6 +2266,8 @@ $lang["can_add_own_timelogs_only"] = "Może dodawać tylko własne logi czasu";
 $lang["all_tasks_overview"] = "Przegląd wszystkich zadań";
 
 $lang["invoice_overview"] = "Przegląd faktur";
+$lang["client_label_overview"] = "Client Label Overview";
+$lang["client_address_overview"] = "Client Addres Overview";
 
 $lang["next_reminder"] = "Następne przypomnienie";
 

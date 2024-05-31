@@ -318,7 +318,7 @@ class Users_model extends Crud_model {
         WHERE $users_table.deleted=0 AND $users_table.id=$user_id";
         return $this->db->query($sql)->getRow();
     }
-
+    
     function get_team_members_and_clients($user_type = "", $user_ids = "", $exlclude_user = 0) {
 
         $users_table = $this->db->prefixTable('users');

@@ -2266,6 +2266,8 @@ $lang["can_add_own_timelogs_only"] = "Può aggiungere solo i propri registri tem
 $lang["all_tasks_overview"] = "Panoramica di tutte le attività";
 
 $lang["invoice_overview"] = "Panoramica fattura";
+$lang["client_label_overview"] = "Client Label Overview";
+$lang["client_address_overview"] = "Client Addres Overview";
 
 $lang["next_reminder"] = "Prossimo promemoria";
 

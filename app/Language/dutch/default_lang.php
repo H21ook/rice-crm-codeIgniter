@@ -2266,6 +2266,8 @@ $lang["can_add_own_timelogs_only"] = "Kan alleen eigen tijdlogs toevoegen";
 $lang["all_tasks_overview"] = "Overzicht van alle taken";
 
 $lang["invoice_overview"] = "Factuuroverzicht";
+$lang["client_label_overview"] = "Client Label Overview";
+$lang["client_address_overview"] = "Client Addres Overview";
 
 $lang["next_reminder"] = "Volgende herinnering";
 

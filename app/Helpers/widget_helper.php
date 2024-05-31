@@ -1458,18 +1458,30 @@ if (!function_exists('projects_overview_widget')) {
         $view_data["completed_status_text"] = $status_text_info->completed;
         $view_data["hold_status_text"] = $status_text_info->hold;
 
-        // $view_data["count_project_status"] = $ci->Projects_model->count_project_status($options);
+        $view_data["count_project_status"] = $ci->Projects_model->count_project_status($options);
 
-        // $view_data["projects_info"] = $ci->Projects_model->count_task_points($options);
-        $client_overview_data = (object) $ci->Projects_model->count_users_client_group();
+        $view_data["projects_info"] = $ci->Projects_model->count_task_points($options);
 
-
-        // $objectData = print_r($client_overview_data, true);
-        // log_message('error', 'client_overview_data ' . $objectData);
-
-        $view_data["projects_info"] = $client_overview_data;
         $template = new Template();
         return $template->view("projects/widgets/projects_overview_widget", $view_data);
+    }
+
+}
+
+/**
+ * Custom nemsen
+ * @return html
+ */
+if (!function_exists('yes_or_no_overview_widget')) {
+
+    function yes_or_no_overview_widget() {
+        $ci = new Security_Controller(false);
+        $Clients_model = model("App\Models\Clients_model");
+        $client_overview_data = (object) $Clients_model->count_yes_or_no_client_group();
+
+        $view_data["clients_count"] = $client_overview_data;
+        $template = new Template();
+        return $template->view("clients/client_yes_or_no_overview_widget", $view_data);
     }
 
 }
@@ -1710,22 +1722,52 @@ if (!function_exists('invoice_overview_widget')) {
 
         $view_data["invoices_info"] = $invoice_info;
 
-        $client_data = $ci->Invoices_model->get_user_grouped_state();
-        $view_data["client_data"] = $client_data;
-        
-        $objectData = print_r($client_data, true);
-        log_message('error', 'client_data ' . $objectData);
-
-        // foreach ($client_data as $item) {
-        //     $objectData = print_r($item, true);
-        //     log_message('error', 'item test ' . $objectData);
-        // }
- 
         $template = new Template();
         return $template->view("invoices/invoice_overview_widget", $view_data);
     }
 
 }
+
+/**
+ * get client label overview widget
+ * 
+ * @return html
+ */
+if (!function_exists('client_label_overview_widget')) {
+
+    function client_label_overview_widget() {
+        $ci = new Security_Controller(false);
+        $Clients_model = model("App\Models\Clients_model");
+
+        $view_data["label_counts"] = $Clients_model->get_label_group_clients();
+
+        $template = new Template();
+        return $template->view("clients/client_label_overview_widget", $view_data);
+    }
+
+}
+
+/**
+ * get total invoices overview widget
+ * @param string $type
+ * 
+ * @return html
+ */
+if (!function_exists('client_address_overview_widget')) {
+
+    function client_address_overview_widget() {
+        $ci = new Security_Controller(false);
+        $Clients_model = model("App\Models\Clients_model");
+
+        $client_data = $Clients_model->get_user_grouped_state();
+        $view_data["client_data"] = $client_data;
+ 
+        $template = new Template();
+        return $template->view("clients/client_address_overview_widget", $view_data);
+    }
+
+}
+
 
 /**
  * get next reminder widget
