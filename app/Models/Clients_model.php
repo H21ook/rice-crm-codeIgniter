@@ -432,59 +432,6 @@ class Clients_model extends Crud_model {
         return $this->db->query($sql);
     }
 
-    function get_label_group_clients() {
-        $clients_table = $this->db->prefixTable('clients');
-        $labels_table = $this->db->prefixTable('labels');
-        
-        $sql = "SELECT l.id, l.title, l.color, count(l.id) as count from $clients_table c
-        inner join $labels_table l ON FIND_IN_SET(l.id, c.labels)
-        group by l.id";
-
-        $results = $this->db->query($sql)->getResult();
-        return $results;
-    }
-
-    function get_user_grouped_state() {
-        $clients_table = $this->db->prefixTable('clients');
-        $client_groups_table = $this->db->prefixTable("client_groups");
-
-        $sql = "SELECT c.state, count(c.state) as count
-            FROM $clients_table as c
-            JOIN $client_groups_table cg ON FIND_IN_SET(cg.id, c.group_ids)
-            WHERE cg.deleted = 0
-            GROUP BY c.state";
-
-        return $this->db->query($sql)->getResult();
-    }
-
-    function count_yes_or_no_client_group() {
-        $clients_table = $this->db->prefixTable('clients');
-        $client_groups_table = $this->db->prefixTable('client_groups');
-        $custom_field_values_table = $this->db->prefixTable('custom_field_values');
-        $custom_fields_table = $this->db->prefixTable('custom_fields');
-
-        $custom_clients = "SELECT c.id
-        FROM $clients_table as c
-        JOIN $client_groups_table as cg ON FIND_IN_SET(cg.id, c.group_ids)
-        WHERE cg.deleted = 0";
-
-        $client_counts = $this->db->query($custom_clients)->getNumRows();
-
-        $sql = "SELECT cf.value as name, count(cf.value) as count
-        FROM ($custom_clients) as clients
-        INNER JOIN (select * from $custom_field_values_table 
-        WHERE custom_field_id in (select id from $custom_fields_table where title = 'yes_or_no' and related_to = 'clients')
-        ) cf on clients.id = cf.related_to_id
-        group By cf.value";
-
-        $result["client_total_count"] = $this->db->query($custom_clients)->getNumRows();
-        $counts =  $this->db->query($sql)->getResult();
-        foreach ($counts as $row) {
-            $result['count_'.strtolower($row->name)] = $row->count;
-        }
-        return $result;
-    }
-
     function count_total_clients($options = array()) {
         $clients_table = $this->db->prefixTable('clients');
         $tickets_table = $this->db->prefixTable('tickets');
@@ -781,4 +728,56 @@ class Clients_model extends Crud_model {
         return $this->db->query($sql);
     }
 
+    function get_label_group_clients() {
+        $clients_table = $this->db->prefixTable('clients');
+        $labels_table = $this->db->prefixTable('labels');
+        
+        $sql = "SELECT l.id, l.title, l.color, count(l.id) as count from $clients_table c
+        inner join $labels_table l ON FIND_IN_SET(l.id, c.labels)
+        group by l.id";
+
+        $results = $this->db->query($sql)->getResult();
+        return $results;
+    }
+
+    function get_user_grouped_state() {
+        $clients_table = $this->db->prefixTable('clients');
+        $client_groups_table = $this->db->prefixTable("client_groups");
+
+        $sql = "SELECT c.state, count(c.state) as count
+            FROM $clients_table as c
+            JOIN $client_groups_table cg ON FIND_IN_SET(cg.id, c.group_ids)
+            WHERE cg.deleted = 0
+            GROUP BY c.state";
+
+        return $this->db->query($sql)->getResult();
+    }
+
+    function count_yes_or_no_client_group() {
+        $clients_table = $this->db->prefixTable('clients');
+        $client_groups_table = $this->db->prefixTable('client_groups');
+        $custom_field_values_table = $this->db->prefixTable('custom_field_values');
+        $custom_fields_table = $this->db->prefixTable('custom_fields');
+
+        $custom_clients = "SELECT c.id
+        FROM $clients_table as c
+        JOIN $client_groups_table as cg ON FIND_IN_SET(cg.id, c.group_ids)
+        WHERE cg.deleted = 0";
+
+        $client_counts = $this->db->query($custom_clients)->getNumRows();
+
+        $sql = "SELECT cf.value as name, count(cf.value) as count
+        FROM ($custom_clients) as clients
+        INNER JOIN (select * from $custom_field_values_table 
+        WHERE custom_field_id in (select id from $custom_fields_table where title = 'yes_or_no' and related_to = 'clients')
+        ) cf on clients.id = cf.related_to_id
+        group By cf.value";
+
+        $result["client_total_count"] = $this->db->query($custom_clients)->getNumRows();
+        $counts =  $this->db->query($sql)->getResult();
+        foreach ($counts as $row) {
+            $result['count_'.strtolower($row->name)] = $row->count;
+        }
+        return $result;
+    }
 }
