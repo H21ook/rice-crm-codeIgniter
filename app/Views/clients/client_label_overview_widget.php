@@ -1,6 +1,6 @@
 <div class="card bg-white">
     <div class="card-header clearfix">
-        <i data-feather="list" class="icon-16"></i> &nbsp;<?php echo app_lang("client_label_overview"); ?>
+        <i data-feather="list" class="icon-16"></i> &nbsp;<?php echo app_lang($type); ?>
     </div>
     <div class="card-body rounded-bottom" id="client-label-widget">
         <div class="row">

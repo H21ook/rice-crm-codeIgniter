@@ -1191,7 +1191,7 @@ class Dashboard extends Security_Controller {
             } else if ($widget == "all_tasks_overview") {
                 return tasks_overview_widget("all_tasks_overview");
             } else if ($widget == "client_label_overview") {
-                return client_label_overview_widget();
+                return client_label_overview_widget("client_label_overview");
             }  else if ($widget == "invoice_overview") {
                 return invoice_overview_widget();
             } else if ($widget == "client_address_overview") {

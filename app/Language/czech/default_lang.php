@@ -2266,6 +2266,7 @@ $lang["can_add_own_timelogs_only"] = "Lze přidávat pouze vlastní časové zá
 $lang["all_tasks_overview"] = "Přehled všech úkolů";
 
 $lang["invoice_overview"] = "Přehled faktur";
+$lang["yes_or_no_overview"] = "Yes Or No Overview";
 $lang["client_label_overview"] = "Client Label Overview";
 $lang["client_address_overview"] = "Client Addres Overview";
 

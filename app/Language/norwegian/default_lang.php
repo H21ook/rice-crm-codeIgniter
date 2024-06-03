@@ -2266,6 +2266,7 @@ $lang["can_add_own_timelogs_only"] = "Kan bare legge til egne tidslogger";
 $lang["all_tasks_overview"] = "Oversikt over alle oppgaver";
 
 $lang["invoice_overview"] = "Fakturaoversikt";
+$lang["yes_or_no_overview"] = "Yes Or No Overview";
 $lang["client_label_overview"] = "Client Label Overview";
 $lang["client_address_overview"] = "Client Addres Overview";
 

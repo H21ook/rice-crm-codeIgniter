@@ -1736,7 +1736,7 @@ if (!function_exists('invoice_overview_widget')) {
  */
 if (!function_exists('client_label_overview_widget')) {
 
-    function client_label_overview_widget() {
+    function client_label_overview_widget($type = "") {
         $ci = new Security_Controller(false);
         $Clients_model = model("App\Models\Clients_model");
 
@@ -1744,6 +1744,7 @@ if (!function_exists('client_label_overview_widget')) {
         $objectData = print_r($result, true);
         log_message('error', 'label_counts: ' . $objectData);
         $view_data["label_counts"] = $result;
+        $view_data["type"] = $type;
         $template = new Template();
         return $template->view("clients/client_label_overview_widget", $view_data);
     }
