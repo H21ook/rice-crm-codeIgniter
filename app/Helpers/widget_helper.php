@@ -1478,7 +1478,6 @@ if (!function_exists('yes_or_no_overview_widget')) {
         $ci = new Security_Controller(false);
         $Clients_model = model("App\Models\Clients_model");
         $client_overview_data = (object) $Clients_model->count_yes_or_no_client_group();
-
         $view_data["clients_count"] = $client_overview_data;
         $template = new Template();
         return $template->view("clients/client_yes_or_no_overview_widget", $view_data);

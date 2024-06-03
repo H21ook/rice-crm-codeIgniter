@@ -772,8 +772,6 @@ class Clients_model extends Crud_model {
         JOIN $client_groups_table as cg ON FIND_IN_SET(cg.id, c.group_ids)
         WHERE cg.deleted = 0 and c.deleted = 0";
 
-        $client_counts = $this->db->query($custom_clients)->getNumRows();
-
         $sql = "SELECT cf.value as name, count(cf.value) as count
         FROM ($custom_clients) as clients
         INNER JOIN (select * from $custom_field_values_table 
@@ -784,8 +782,14 @@ class Clients_model extends Crud_model {
 
         $result["client_total_count"] = $this->db->query($custom_clients)->getNumRows();
         $counts =  $this->db->query($sql)->getResult();
-        foreach ($counts as $row) {
-            $result['count_'.strtolower($row->name)] = $row->count;
+
+        if (empty($array)) {
+            $result['count_yes'] = 0;
+            $result['count_no'] = 0;
+        } else {
+            foreach ($counts as $row) {
+                $result['count_'.strtolower($row->name)] = $row->count;
+            }
         }
         return $result;
     }
