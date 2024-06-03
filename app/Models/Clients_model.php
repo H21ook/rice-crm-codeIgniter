@@ -775,7 +775,7 @@ class Clients_model extends Crud_model {
         $sql = "SELECT cf.value as name, count(cf.value) as count
         FROM ($custom_clients) as clients
         INNER JOIN (select * from $custom_field_values_table 
-        WHERE custom_field_id in (select id from $custom_fields_table where title = 'yes_or_no' and related_to = 'clients')
+        WHERE custom_field_id in (select id from $custom_fields_table where title = 'yes_or_no')
         AND deleted = 0
         ) cf on clients.id = cf.related_to_id
         group By cf.value";
@@ -783,7 +783,7 @@ class Clients_model extends Crud_model {
         $result["client_total_count"] = $this->db->query($custom_clients)->getNumRows();
         $counts =  $this->db->query($sql)->getResult();
 
-        if (empty($array)) {
+        if (empty($counts)) {
             $result['count_yes'] = 0;
             $result['count_no'] = 0;
         } else {

@@ -345,34 +345,6 @@ class Projects_model extends Crud_model {
         return $this->db->query($sql);
     }
 
-    function count_users_client_group() {
-        $clients_table = $this->db->prefixTable('clients');
-        $client_groups_table = $this->db->prefixTable('client_groups');
-        $custom_field_values_table = $this->db->prefixTable('custom_field_values');
-        $custom_fields_table = $this->db->prefixTable('custom_fields');
-
-        $custom_clients = "SELECT c.id
-        FROM $clients_table as c
-        JOIN $client_groups_table as cg ON FIND_IN_SET(cg.id, c.group_ids)
-        WHERE cg.deleted = 0";
-
-        $client_counts = $this->db->query($custom_clients)->getNumRows();
-
-        $sql = "SELECT cf.value as name, count(cf.value) as count
-        FROM ($custom_clients) as clients
-        INNER JOIN (select * from $custom_field_values_table 
-        WHERE custom_field_id in (select id from $custom_fields_table where title = 'yes_or_no' and related_to = 'clients')
-        ) cf on clients.id = cf.related_to_id
-        group By cf.value";
-
-        $result["client_total_count"] = $this->db->query($custom_clients)->getNumRows();
-        $counts =  $this->db->query($sql)->getResult();
-        foreach ($counts as $row) {
-            $result['count_'.strtolower($row->name)] = $row->count;
-        }
-        return $result;
-    }
-
     function count_task_points($options = array()) {
         $projects_table = $this->db->prefixTable('projects');
         $project_members_table = $this->db->prefixTable('project_members');
