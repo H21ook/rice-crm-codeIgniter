@@ -523,7 +523,7 @@ class App extends BaseConfig {
     public $CSPEnabled = false;
 
     /* User configs */
-    public $encryption_key = "8789daefa97860f";
+    public $encryption_key = "enter_encryption_key";
     public $csrf_protection = true;
     public $temp_file_path = 'files/temp/';
     public $profile_image_path = 'files/profile_images/';
