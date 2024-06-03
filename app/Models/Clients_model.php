@@ -734,6 +734,7 @@ class Clients_model extends Crud_model {
         
         $sql = "SELECT l.id, l.title, l.color, count(l.id) as count from $clients_table c
         inner join $labels_table l ON FIND_IN_SET(l.id, c.labels)
+        where c.deleted = 0 and l.deleted = 0
         group by l.id";
 
         $results = $this->db->query($sql)->getResult();
@@ -743,12 +744,19 @@ class Clients_model extends Crud_model {
     function get_user_grouped_state() {
         $clients_table = $this->db->prefixTable('clients');
         $client_groups_table = $this->db->prefixTable("client_groups");
+        $custom_field_values_table = $this->db->prefixTable('custom_field_values');
+        $custom_fields_table = $this->db->prefixTable('custom_fields');
 
-        $sql = "SELECT c.state, count(c.state) as count
-            FROM $clients_table as c
-            JOIN $client_groups_table cg ON FIND_IN_SET(cg.id, c.group_ids)
-            WHERE cg.deleted = 0
-            GROUP BY c.state";
+        $sql = "SELECT clients.state, count(*) as total, SUM(CASE WHEN value = 'YES' THEN 1 ELSE 0 END) AS yes_count
+        FROM (SELECT c.id, c.state
+        FROM $clients_table as c
+        JOIN $client_groups_table as cg ON FIND_IN_SET(cg.id, c.group_ids)
+        WHERE cg.deleted = 0 and c.deleted = 0) as clients
+        INNER JOIN (select * from $custom_field_values_table 
+        WHERE custom_field_id in (select id from $custom_fields_table where title = 'yes_or_no' and related_to = 'clients') 
+        AND deleted = 0
+        ) cf on clients.id = cf.related_to_id
+        group By clients.state";
 
         return $this->db->query($sql)->getResult();
     }
@@ -762,7 +770,7 @@ class Clients_model extends Crud_model {
         $custom_clients = "SELECT c.id
         FROM $clients_table as c
         JOIN $client_groups_table as cg ON FIND_IN_SET(cg.id, c.group_ids)
-        WHERE cg.deleted = 0";
+        WHERE cg.deleted = 0 and c.deleted = 0";
 
         $client_counts = $this->db->query($custom_clients)->getNumRows();
 
@@ -770,6 +778,7 @@ class Clients_model extends Crud_model {
         FROM ($custom_clients) as clients
         INNER JOIN (select * from $custom_field_values_table 
         WHERE custom_field_id in (select id from $custom_fields_table where title = 'yes_or_no' and related_to = 'clients')
+        AND deleted = 0
         ) cf on clients.id = cf.related_to_id
         group By cf.value";
 

@@ -259,25 +259,6 @@ class Invoices_model extends Crud_model {
         return $this->db->query($sql);
     }
 
-    function get_user_grouped_state() {
-        $clients_table = $this->db->prefixTable('clients');
-        $client_groups_table = $this->db->prefixTable("client_groups");
-
-        $sql = "SELECT c.state, count(c.state) as count
-            FROM $clients_table as c
-            JOIN $client_groups_table cg ON FIND_IN_SET(cg.id, c.group_ids)
-            WHERE cg.deleted = 0
-            GROUP BY c.state";
-
-        $result = $this->db->query($sql)->getResult();
-        // $result = [];
-        // foreach ($counts as $row) {
-        //     array_push($result, $row);
-        // }
-
-        return $result;
-    }
-
     function get_invoices_total_and_paymnts($options = array()) {
         $invoices_table = $this->db->prefixTable('invoices');
         $invoice_payments_table = $this->db->prefixTable('invoice_payments');
