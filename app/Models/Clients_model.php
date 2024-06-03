@@ -749,9 +749,10 @@ class Clients_model extends Crud_model {
 
         $sql = "SELECT clients.state, count(*) as total, SUM(CASE WHEN value = 'YES' THEN 1 ELSE 0 END) AS yes_count
         FROM (SELECT c.id, c.state
-        FROM $clients_table as c
-        JOIN $client_groups_table as cg ON FIND_IN_SET(cg.id, c.group_ids)
-        WHERE cg.deleted = 0 and c.deleted = 0) as clients
+        FROM $clients_table c
+        JOIN $client_groups_table cg ON FIND_IN_SET(cg.id, c.group_ids)
+        WHERE cg.deleted = 0 and c.deleted = 0
+        group by c.id) as clients
         INNER JOIN (select * from $custom_field_values_table 
         WHERE custom_field_id in (select id from $custom_fields_table where title = 'yes_or_no' and related_to = 'clients') 
         AND deleted = 0
@@ -767,10 +768,11 @@ class Clients_model extends Crud_model {
         $custom_field_values_table = $this->db->prefixTable('custom_field_values');
         $custom_fields_table = $this->db->prefixTable('custom_fields');
 
-        $custom_clients = "SELECT c.id
-        FROM $clients_table as c
-        JOIN $client_groups_table as cg ON FIND_IN_SET(cg.id, c.group_ids)
-        WHERE cg.deleted = 0 and c.deleted = 0";
+        $custom_clients = "SELECT c.id, c.company_name
+        FROM $clients_table c
+        JOIN $client_groups_table cg ON FIND_IN_SET(cg.id, c.group_ids)
+        WHERE cg.deleted = 0 and c.deleted = 0
+        group by c.id";
 
         $sql = "SELECT cf.value as name, count(cf.value) as count
         FROM ($custom_clients) as clients
