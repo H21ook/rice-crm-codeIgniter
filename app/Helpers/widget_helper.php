@@ -1479,6 +1479,8 @@ if (!function_exists('yes_or_no_overview_widget')) {
         $Clients_model = model("App\Models\Clients_model");
         $client_overview_data = (object) $Clients_model->count_yes_or_no_client_group();
         $view_data["clients_count"] = $client_overview_data;
+        $objectData = print_r($client_overview_data, true);
+        log_message('error', 'clients_count: ' . $objectData);
         $template = new Template();
         return $template->view("clients/client_yes_or_no_overview_widget", $view_data);
     }
@@ -1738,8 +1740,10 @@ if (!function_exists('client_label_overview_widget')) {
         $ci = new Security_Controller(false);
         $Clients_model = model("App\Models\Clients_model");
 
-        $view_data["label_counts"] = $Clients_model->get_label_group_clients();
-
+        $result = $Clients_model->get_label_group_clients();
+        $objectData = print_r($result, true);
+        log_message('error', 'label_counts: ' . $objectData);
+        $view_data["label_counts"] = $result;
         $template = new Template();
         return $template->view("clients/client_label_overview_widget", $view_data);
     }
@@ -1760,7 +1764,8 @@ if (!function_exists('client_address_overview_widget')) {
 
         $client_data = $Clients_model->get_user_grouped_state();
         $view_data["client_data"] = $client_data;
- 
+        $objectData = print_r($client_data, true);
+        log_message('error', 'client_address_data: ' . $objectData);
         $template = new Template();
         return $template->view("clients/client_address_overview_widget", $view_data);
     }
