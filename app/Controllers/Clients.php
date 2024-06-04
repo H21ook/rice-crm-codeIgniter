@@ -1499,6 +1499,8 @@ class Clients extends Security_Controller
                 $custom_field_values_array[$custom_field_id] = $row_data_value;
             } else if ($header_key_value == "client_groups") { //we've to make client groups data differently
                 $client_data["group_ids"] = $this->_get_client_group_ids($row_data_value);
+            } else if ($header_key_value == "labels") { //we've to make client groups data differently
+                $client_data["labels"] = $this->_get_client_label_ids($row_data_value);
             } else if ($header_key_value == "contact_first_name") {
                 $client_contact_data["first_name"] = $row_data_value;
             } else if ($header_key_value == "contact_last_name") {
@@ -1664,6 +1666,33 @@ class Clients extends Security_Controller
         }
     }
 
+    private function _get_client_label_ids($client_labels_data)
+    {
+        $explode_client_labels = explode(", ", $client_labels_data);
+        if (!($explode_client_labels && count($explode_client_labels))) {
+            return false;
+        }
+        $labels_ids = "";
+
+        foreach ($explode_client_labels as $label) {
+            $existing_group = $this->Clients_model->get_labels_by_title($label);
+            $label_id = "";
+
+            if (!is_null($existing_group)) {
+                $label_id = $existing_group->id;
+            }
+
+            if ($labels_ids) {
+                $labels_ids .= ",";
+            }
+            $labels_ids .= $label_id;
+        }
+
+        if ($labels_ids) {
+            return $labels_ids;
+        }
+    }
+
     private function _get_allowed_headers()
     {
         return array(
@@ -1681,7 +1710,8 @@ class Clients extends Security_Controller
             "vat_number",
             "client_groups",
             "currency",
-            "currency_symbol"
+            "currency_symbol",
+            "labels"
         );
     }
 

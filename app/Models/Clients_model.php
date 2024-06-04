@@ -808,4 +808,15 @@ class Clients_model extends Crud_model {
         }
         return $result;
     }
+
+    function get_labels_by_title($title) {
+        $labels_table = $this->db->prefixTable('labels');
+        $sql = "SELECT * from myproject.rise_labels where title in ('$title')";
+        $results = $this->db->query($sql)->getResult();
+
+        if(count($results) > 0) {
+            return $results[0];
+        }
+        return null;
+    }
 }

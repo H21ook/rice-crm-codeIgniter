@@ -1761,8 +1761,6 @@ if (!function_exists('client_address_overview_widget')) {
 
         $client_data = $Clients_model->get_user_grouped_state();
         $view_data["client_data"] = $client_data;
-        $objectData = print_r($client_data, true);
-        log_message('error', 'client_address_data: ' . $objectData);
         $template = new Template();
         return $template->view("clients/client_address_overview_widget", $view_data);
     }
