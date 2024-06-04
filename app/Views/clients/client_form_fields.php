@@ -7,22 +7,14 @@
         <div class="<?php echo $field_column; ?>">
             <?php
             echo form_radio(array(
-                "id" => "type_organization",
-                "name" => "account_type",
-                "class" => "form-check-input account_type",
-                "data-msg-required" => app_lang("field_required"),
-            ), "organization", ($model_info->type === "organization") ? true : (($model_info->type !== "person") ? true : false));
-            ?>
-            <label for="type_organization" class="mr15"><?php echo app_lang('organization'); ?></label>
-            <?php
-            echo form_radio(array(
                 "id" => "type_person",
                 "name" => "account_type",
                 "class" => "form-check-input account_type",
                 "data-msg-required" => app_lang("field_required"),
-            ), "person", ($model_info->type === "person") ? true : false);
+            ), "person", ($model_info->type === "person") ? true : (($model_info->type !== "organization") ? true : false));
             ?>
             <label for="type_person" class=""><?php echo app_lang('person'); ?></label>
+            
         </div>
     </div>
 </div>
@@ -54,7 +46,7 @@
 <?php } else { ?>
     <div class="form-group">
         <div class="row">
-            <label for="company_name" class="<?php echo $label_column; ?> company_name_section"><?php echo app_lang('company_name'); ?></label>
+            <label for="name" class="<?php echo $label_column; ?> company_name_section"><?php echo app_lang('name'); ?></label>
             <div class="<?php echo $field_column; ?>">
                 <?php
                 echo form_input(array(
@@ -62,7 +54,7 @@
                     "name" => "company_name",
                     "value" => $model_info->company_name,
                     "class" => "form-control company_name_input_section",
-                    "placeholder" => app_lang('company_name'),
+                    "placeholder" => app_lang('name'),
                     "autofocus" => true,
                     "data-rule-required" => true,
                     "data-msg-required" => app_lang("field_required"),
@@ -147,22 +139,6 @@
 </div>
 <div class="form-group">
     <div class="row">
-        <label for="zip" class="<?php echo $label_column; ?>"><?php echo app_lang('zip'); ?></label>
-        <div class="<?php echo $field_column; ?>">
-            <?php
-            echo form_input(array(
-                "id" => "zip",
-                "name" => "zip",
-                "value" => $model_info->zip,
-                "class" => "form-control",
-                "placeholder" => app_lang('zip')
-            ));
-            ?>
-        </div>
-    </div>
-</div>
-<div class="form-group">
-    <div class="row">
         <label for="country" class="<?php echo $label_column; ?>"><?php echo app_lang('country'); ?></label>
         <div class="<?php echo $field_column; ?>">
             <?php
@@ -188,54 +164,6 @@
                 "value" => $model_info->phone,
                 "class" => "form-control",
                 "placeholder" => app_lang('phone')
-            ));
-            ?>
-        </div>
-    </div>
-</div>
-<div class="form-group">
-    <div class="row">
-        <label for="website" class="<?php echo $label_column; ?>"><?php echo app_lang('website'); ?></label>
-        <div class="<?php echo $field_column; ?>">
-            <?php
-            echo form_input(array(
-                "id" => "website",
-                "name" => "website",
-                "value" => $model_info->website,
-                "class" => "form-control",
-                "placeholder" => app_lang('website')
-            ));
-            ?>
-        </div>
-    </div>
-</div>
-<div class="form-group">
-    <div class="row">
-        <label for="vat_number" class="<?php echo $label_column; ?>"><?php echo app_lang('vat_number'); ?></label>
-        <div class="<?php echo $field_column; ?>">
-            <?php
-            echo form_input(array(
-                "id" => "vat_number",
-                "name" => "vat_number",
-                "value" => $model_info->vat_number,
-                "class" => "form-control",
-                "placeholder" => app_lang('vat_number')
-            ));
-            ?>
-        </div>
-    </div>
-</div>
-<div class="form-group">
-    <div class="row">
-        <label for="gst_number" class="<?php echo $label_column; ?>"><?php echo app_lang('gst_number'); ?></label>
-        <div class="<?php echo $field_column; ?>">
-            <?php
-            echo form_input(array(
-                "id" => "gst_number",
-                "name" => "gst_number",
-                "value" => $model_info->gst_number,
-                "class" => "form-control",
-                "placeholder" => app_lang('gst_number')
             ));
             ?>
         </div>
@@ -317,20 +245,6 @@
 <?php } ?>
 <?php echo view("custom_fields/form/prepare_context_fields", array("custom_fields" => $custom_fields, "label_column" => $label_column, "field_column" => $field_column)); ?>
 
-<?php if ($login_user->is_admin && get_setting("module_invoice")) { ?>
-    <div class="form-group">
-        <div class="row">
-            <label for="disable_online_payment" class="<?php echo $label_column; ?> col-xs-8 col-sm-6"><?php echo app_lang('disable_online_payment'); ?>
-                <span class="help" data-container="body" data-bs-toggle="tooltip" title="<?php echo app_lang('disable_online_payment_description') ?>"><i data-feather="help-circle" class="icon-16"></i></span>
-            </label>
-            <div class="<?php echo $field_column; ?> col-xs-4 col-sm-6">
-                <?php
-                echo form_checkbox("disable_online_payment", "1", $model_info->disable_online_payment ? true : false, "id='disable_online_payment' class='form-check-input'");
-                ?>
-            </div>
-        </div>
-    </div>
-<?php } ?>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -365,12 +279,13 @@
         <?php } ?>
         $('.account_type').click(function() {
             var inputValue = $(this).attr("value");
-            if (inputValue === "person") {
-                $(".company_name_section").html("<?php echo app_lang('name'); ?>");
-                $(".company_name_input_section").attr("placeholder", "<?php echo app_lang('name'); ?>");
-            } else {
+            if (inputValue === "organization") {
                 $(".company_name_section").html("<?php echo app_lang('company_name'); ?>");
                 $(".company_name_input_section").attr("placeholder", "<?php echo app_lang('company_name'); ?>");
+            } else {
+                $(".company_name_section").html("<?php echo app_lang('name'); ?>");
+                $(".company_name_input_section").attr("placeholder", "<?php echo app_lang('name'); ?>");
+                
             }
         });
 

@@ -1479,8 +1479,6 @@ if (!function_exists('yes_or_no_overview_widget')) {
         $Clients_model = model("App\Models\Clients_model");
         $client_overview_data = (object) $Clients_model->count_yes_or_no_client_group();
         $view_data["clients_count"] = $client_overview_data;
-        $objectData = print_r($client_overview_data, true);
-        log_message('error', 'clients_count: ' . $objectData);
         $template = new Template();
         return $template->view("clients/client_yes_or_no_overview_widget", $view_data);
     }
@@ -1741,8 +1739,6 @@ if (!function_exists('client_label_overview_widget')) {
         $Clients_model = model("App\Models\Clients_model");
 
         $result = $Clients_model->get_label_group_clients();
-        $objectData = print_r($result, true);
-        log_message('error', 'label_counts: ' . $objectData);
         $view_data["label_counts"] = $result;
         $view_data["type"] = $type;
         $template = new Template();

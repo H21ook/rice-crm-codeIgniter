@@ -778,7 +778,7 @@ class Clients_model extends Crud_model {
         FROM ($custom_clients) as clients
         INNER JOIN (select * from $custom_field_values_table 
         WHERE custom_field_id in (select id from $custom_fields_table where title = 'yes_or_no')
-        AND deleted = 0
+        AND deleted = 0 AND value is not null AND value != ''
         ) cf on clients.id = cf.related_to_id
         group By cf.value";
 
@@ -789,8 +789,21 @@ class Clients_model extends Crud_model {
             $result['count_yes'] = 0;
             $result['count_no'] = 0;
         } else {
-            foreach ($counts as $row) {
-                $result['count_'.strtolower($row->name)] = $row->count;
+            if(count($counts) > 1) {
+                foreach ($counts as $row) {
+                    $result['count_'.strtolower($row->name)] = $row->count;
+                } 
+            } else {
+                foreach ($counts as $row) {
+                    if(strtolower($row->name) == "yes") {
+                        $result['count_'.strtolower($row->name)] = $row->count;
+                        $result['count_no'] = 0;
+                    } 
+                    if(strtolower($row->name) == "no"){
+                        $result['count_'.strtolower($row->name)] = $row->count;
+                        $result['count_yes'] = 0;
+                    }
+                } 
             }
         }
         return $result;
