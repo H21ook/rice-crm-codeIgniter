@@ -753,7 +753,7 @@ class Clients_model extends Crud_model {
         JOIN $client_groups_table cg ON FIND_IN_SET(cg.id, c.group_ids)
         WHERE cg.deleted = 0 and c.deleted = 0
         group by c.id) as clients
-        INNER JOIN (select * from $custom_field_values_table 
+        LEFT JOIN (select * from $custom_field_values_table 
         WHERE custom_field_id in (select id from $custom_fields_table where title = 'yes_or_no' and related_to = 'clients') 
         AND deleted = 0
         ) cf on clients.id = cf.related_to_id
